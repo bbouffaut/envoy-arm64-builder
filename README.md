@@ -18,13 +18,6 @@ cd envoy-arm64-builder
 git submodule update --init --recursive
 ```
 
-Additional tasks:
-- Create vscode group in /etc/groups
-- Change ownership of envoy repo:
-```sh
-chown -R vscode:vscode envoy
-```
-
 ---
 
 ## 🚀 Build Envoy
