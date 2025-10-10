@@ -10,7 +10,7 @@ services:
     network_mode: host
     volumes:
       - .:/workspace
-      - bazel-cache:/build/.cache/envoy-bazel
+      - ./bazel-cache:/build/.cache/envoy-bazel
     working_dir: /workspace/envoy
     entrypoint: ["bash","-lc"]
     command:
@@ -31,6 +31,7 @@ services:
 
         echo '👤 Switching to vscode user...'
         exec sudo -u vscode bash -lc '
+          ls -l ${BAZELRC_FILE}
           set -euo pipefail
           export XDG_CACHE_HOME=/build/.cache/envoy-bazel
           export BAZEL_BUILD_EXTRA_OPTIONS="--define tcmalloc=gperftools"
@@ -45,5 +46,3 @@ services:
 
           echo "✅ Envoy build completed!"
         '
-volumes:
-  bazel-cache:
