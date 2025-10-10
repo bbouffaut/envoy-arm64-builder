@@ -10,7 +10,7 @@ services:
     network_mode: host
     volumes:
       - .:/workspace
-      - ./bazel-cache:/build/.cache/envoy-bazel
+      - bazel-cache:/build/.cache/envoy-bazel
     working_dir: /workspace/envoy
     entrypoint: ["bash","-lc"]
     command:
@@ -25,11 +25,14 @@ services:
           echo '✅ Bazel cache already exists, skipping setup.'
         fi
 
-        echo '📂 Fixing permissions on Bazel cache...'
-        mkdir -p /build/.cache/envoy-bazel
-        chown vscode:vscode /build/.cache/envoy-bazel
+        echo '📂 Fixing permissions on Bazel cache...' &&
+        mkdir -p /build/.cache/envoy-bazel ;
+        chown vscode:vscode /build/.cache/envoy-bazel &&
 
-        echo '👤 Switching to vscode user...'
+        echo '📂 Fixing permissions on workspace...'
+        chown -R vscode:vscode /workspace
+
+        echo '👤 Switching to vscode user...' &&
         exec sudo -u vscode bash -lc '
           set -euo pipefail
           export XDG_CACHE_HOME=/build/.cache/envoy-bazel
@@ -45,3 +48,6 @@ services:
 
           echo "✅ Envoy build completed!"
         '
+
+volumes:
+  bazel-cache:
